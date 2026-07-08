@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdur Rahat | Personal Space</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050811;
+            color: #f3f4f6;
+            font-family: sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* AURORA BACKGROUND SHADOWS */
+        .bg-glow-left {
+            position: fixed;
+            top: -10%;
+            left: -20%;
+            width: 60vw;
+            height: 70vh;
+            background: radial-gradient(circle, rgba(24, 76, 179, 0.45) 0%, rgba(0, 0, 0, 0) 70%);
+            filter: blur(100px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-glow-right {
+            position: fixed;
+            bottom: -10%;
+            right: -20%;
+            width: 60vw;
+            height: 75vh;
+            background: radial-gradient(circle, rgba(13, 148, 136, 0.35) 0%, rgba(0, 0, 0, 0) 70%);
+            filter: blur(110px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Fixed Interactive Background Canvas Layer */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none; /* Allows mouse interactions to pass through to sections below */
+        }
+
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(10, 15, 30, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            width: 100%;
+        }
+
+        /* Pulse Glowing Image */
+        .glow-avatar {
+            animation: floatingGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes floatingGlow {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+                box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.02);
+                box-shadow: 0 0 45px rgba(147, 51, 234, 0.8);
+            }
+        }
+
+        /* Interactive Card Glow */
+        .interactive-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .interactive-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #3b82f6;
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Instagram Gradient Text/Icon Effect */
+        .instagram-gradient {
+            background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* GORGEOUS NAV LINK STYLING */
+        .gorgeous-nav-link {
+            position: relative;
+            color: #9ca3af;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .gorgeous-nav-link:hover {
+            color: #22d3ee;
+            text-shadow: 0 0 8px rgba(34, 211, 238, 0.6);
+        }
+
+        .gorgeous-nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(90deg, #3b82f6, #22d3ee);
+            transform-origin: bottom right;
+            transition: transform 0.3s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .gorgeous-nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* 🔄 ADVANCED INFINITE AESTHETIC CAROUSEL */
+        .slider-container {
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            padding: 15px 0;
+        }
+
+        .slider-container::before, .slider-container::after {
+            content: "";
+            height: 100%;
+            position: absolute;
+            width: 15%;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .slider-container::before {
+            left: 0;
+            top: 0;
+            background: linear-gradient(to right, #050811 10%, rgba(5, 8, 17, 0) 100%);
+        }
+        .slider-container::after {
+            right: 0;
+            top: 0;
+            background: linear-gradient(to left, #050811 10%, rgba(5, 8, 17, 0) 100%);
+        }
+
+        .slider-track {
+            display: flex;
+            width: calc((320px + 24px) * 12); 
+            animation: ultraSmoothScroll 35s linear infinite;
+        }
+
+        .slider-container:hover .slider-track {
+            animation-play-state: paused;
+        }
+
+        @keyframes ultraSmoothScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc((-320px - 24px) * 6)); } 
+        }
+
+        .slide-img {
+            width: 320px; 
+            height: 220px; 
+            object-fit: cover;
+            margin: 0 12px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255,255,255,0.1);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .slide-img:hover {
+            transform: scale(1.05) translateY(-4px);
+            border-color: rgba(34, 211, 238, 0.6);
+            box-shadow: 0 20px 40px rgba(34, 211, 238, 0.25);
+        }
+
+        /* ⌨️ TYPING EFFECTS */
+        .typing-container {
+            display: inline-block;
+            position: relative;
+        }
+        .typing-text::after {
+            content: '|';
+            position: absolute;
+            right: -10px;
+            animation: blink 0.75s step-end infinite;
+            color: #22d3ee;
+        }
+        @keyframes blink {
+            from, to { color: transparent }
+            50% { color: #22d3ee; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUND SHADOW GLOWS -->
+    <div class="bg-glow-left"></div>
+    <div class="bg-glow-right"></div>
+
+    <!-- INTERACTIVE ANIMATED CANVAS BACKGROUND -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Content Wrapper Layer (Must be position relative to remain active over canvas) -->
+    <div class="relative z-10 w-full px-4 md:px-12 lg:px-24">
+
+        <!-- Navbar -->
+        <nav class="fixed top-0 left-0 w-full p-5 bg-gray-950/40 backdrop-blur-md border-b border-white/5 z-50 flex justify-center px-4 md:px-12 lg:px-24">
+            <div class="w-full flex justify-between items-center">
+                <h1 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r inline-block from-blue-400 to-cyan-400 tracking-wider">Abdur Rahat</h1>
+                <div class="space-x-4 md:space-x-8 text-xs md:text-sm hidden sm:flex items-center">
+                    <a href="#about" class="gorgeous-nav-link">About</a>
+                    <a href="#hobbies" class="gorgeous-nav-link">Hobbies</a>
+                    <a href="#books" class="gorgeous-nav-link">Books</a>
+                    <a href="#travels" class="gorgeous-nav-link">Travels</a>
+                    <a href="#education" class="gorgeous-nav-link">Education</a>
+                    <a href="#contact" class="gorgeous-nav-link">Contact</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 🚀 Hero Section (Grid Setup for wide screens) -->
+        <header id="about" class="w-full min-h-screen flex flex-col justify-center items-center pt-24 pb-12">
+            
+            <div class="w-full grid grid-cols-1 lg:grid-cols-4 items-center gap-8 xl:gap-12 mt-4">
+                
+                <!-- 🌟 Left Side Content (Fills Left Blank Space on Desktop) -->
+                <div class="hidden lg:flex flex-col gap-5 text-left order-2 lg:order-1" data-aos="fade-right" data-aos-delay="400">
+                    <div class="glass-card p-5 rounded-2xl border border-white/5 shadow-lg">
+                        <div class="text-cyan-400 text-xl mb-1"><i class="fa-solid fa-location-dot"></i></div>
+                        <h4 class="text-white font-bold text-base">Based In</h4>
+                        <p class="text-sm text-gray-400 font-mono">Bangladesh</p>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl border border-white/5 shadow-lg">
+                        <div class="text-blue-400 text-xl mb-1"><i class="fa-solid fa-circle-check"></i></div>
+                        <h4 class="text-white font-bold text-base">Current Status</h4>
+                        <p class="text-sm text-gray-400">Student & Explorer</p>
+                    </div>
+                </div>
+
+                <!-- 👤 Center Main Content (Takes 2 Columns on Desktop) -->
+                <div class="col-span-1 lg:col-span-2 text-center order-1 lg:order-2 flex flex-col items-center">
+                    <!-- Round Avatar -->
+                    <div class="mb-6" data-aos="zoom-in" data-aos-duration="1000">
+                        <img src="528746300_696141826805906_4493909416332600601_n.jpg" alt="Abdur Rahat" class="w-52 h-52 md:w-60 md:h-60 rounded-full border-4 border-blue-500/50 glow-avatar object-cover mx-auto" onerror="this.onerror=null;this.src='https://via.placeholder.com/250/3b82f6/ffffff?text=RAHAT'">
+                    </div>
+
+                    <div data-aos="fade-up" data-aos-delay="200" class="w-full">
+                        <p class="text-lg text-cyan-400 mb-2 font-semibold tracking-wide">WELCOME TO MY SHORE</p>
+                        <h2 class="text-4xl md:text-6xl font-black mb-4 tracking-tight leading-none">
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400">Abdur Rahat</span>
+                        </h2>
+                        
+                        <!-- Typing Transition Block -->
+                        <div class="text-xl md:text-2xl font-mono text-cyan-300 h-10 mb-5 typing-container">
+                            I am a <span class="typing-text"></span>
+                        </div>
+
+                        <p class="text-base md:text-lg text-gray-400 mb-8 w-full max-w-2xl mx-auto px-2 leading-relaxed">
+                            A student, nature lover, avid reader, and lifestyle explorer. I balance my structured hours with green gardening, capturing frames, and swimming setups.
+                        </p>
+                        
+                        <!-- Buttons Area -->
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md mx-auto px-4">
+                            <a href="#contact" class="w-full sm:w-1/2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-3 rounded-full transition duration-300 shadow-xl hover:scale-105 text-center">Get in Touch</a>
+                            <a href="#hobbies" class="w-full sm:w-1/2 border border-gray-700 bg-gray-900/30 text-gray-300 hover:text-white hover:border-cyan-400 font-bold py-3 rounded-full transition duration-300 shadow-lg hover:scale-105 text-center">My Hobbies</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🌟 Right Side Content (Fills Right Blank Space on Desktop) -->
+                <div class="hidden lg:flex flex-col gap-5 text-right order-3" data-aos="fade-left" data-aos-delay="400">
+                    <div class="glass-card p-5 rounded-2xl border border-white/5 shadow-lg text-left">
+                        <div class="text-teal-400 text-xl mb-1"><i class="fa-solid fa-heart"></i></div>
+                        <h4 class="text-white font-bold text-base">Core Focus</h4>
+                        <p class="text-sm text-gray-400">Geometry & Analytics</p>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl border border-white/5 shadow-lg text-left">
+                        <div class="text-yellow-400 text-xl mb-1"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <h4 class="text-white font-bold text-base">Key Passions</h4>
+                        <p class="text-sm text-gray-400">Photography & Nature</p>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- 🎯 HOBBIES SECTION -->
+        <section id="hobbies" class="w-full py-8">
+            
+            <!-- CAROUSEL SLIDER (Below Hero Buttons & Above Core Heading) -->
+            <div class="w-full glass-card p-4 rounded-3xl mb-14 shadow-2xl border border-white/5" data-aos="fade-up" data-aos-duration="1000">
+                <div class="slider-container">
+                    <div class="slider-track">
+                        <img src="hobby1.jpg" alt="Gardening Space" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=500&auto=format&fit=crop'">
+                        <img src="hobby2.jpg" alt="Traveling Landscape" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=500&auto=format&fit=crop'">
+                        <img src="hobby3.jpg" alt="Avian / Birds care" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1452570053594-1b985d6ea890?q=80&w=500&auto=format&fit=crop'">
+                        <img src="hobby4.jpg" alt="Swimming Fitness" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=500&auto=format&fit=crop'">
+                        <img src="photography.jpg" alt="Photography Focus" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=500&auto=format&fit=crop'">
+                        <img src="hobby5.jpg" alt="Nature Exploration" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=500&auto=format&fit=crop'">
+                        
+                        <!-- Continuous loop items -->
+                        <img src="hobby1.jpg" alt="Gardening Space" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=500&auto=format&fit=crop'">
+                        <img src="hobby2.jpg" alt="Traveling Landscape" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=500&auto=format&fit=crop'">
+                        <img src="hobby3.jpg" alt="Avian / Birds care" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1452570053594-1b985d6ea890?q=80&w=500&auto=format&fit=crop'">
+                        <img src="hobby4.jpg" alt="Swimming Fitness" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=500&auto=format&fit=crop'">
+                        <img src="photography.jpg" alt="Photography Focus" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=500&auto=format&fit=crop'">
+                        <img src="hobby5.jpg" alt="Nature Exploration" class="slide-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=500&auto=format&fit=crop'">
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-4xl font-extrabold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400" data-aos="fade-up">My Core Hobbies</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full" data-aos="fade-up">
+                <!-- Gardening -->
+                <div class="interactive-card glass-card p-8 rounded-2xl flex flex-col items-center text-center justify-between">
+                    <div class="flex flex-col items-center">
+                        <div class="text-green-400 text-4xl mb-4"><i class="fa-solid fa-seedling"></i></div>
+                        <h4 class="font-bold text-2xl mb-2 text-white">Gardening</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">Nurturing plants, growing greens, and creating refreshing local setups.</p>
+                    </div>
+                    <span class="text-xs text-green-400 mt-6 font-mono">#GreenLife</span>
+                </div>
+                <!-- Traveling -->
+                <div class="interactive-card glass-card p-8 rounded-2xl flex flex-col items-center text-center justify-between">
+                    <div class="flex flex-col items-center">
+                        <div class="text-blue-400 text-4xl mb-4"><i class="fa-solid fa-plane-departure"></i></div>
+                        <h4 class="font-bold text-2xl mb-2 text-white">Traveling</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">Backpacking to scenic layouts and taking in deep landscape views.</p>
+                    </div>
+                    <span class="text-xs text-blue-400 mt-6 font-mono">#Wanderlust</span>
+                </div>
+                <!-- Photography -->
+                <div class="interactive-card glass-card p-8 rounded-2xl flex flex-col items-center text-center justify-between">
+                    <div class="flex flex-col items-center">
+                        <div class="text-yellow-400 text-4xl mb-4"><i class="fa-solid fa-camera-retro"></i></div>
+                        <h4 class="font-bold text-2xl mb-2 text-white">Photography</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">Freezing visual frames, chasing golden hour metrics, and documenting perspectives.</p>
+                    </div>
+                    <span class="text-xs text-yellow-400 mt-6 font-mono">#Visuals #Shots</span>
+                </div>
+                <!-- Bird Keeping -->
+                <div class="interactive-card glass-card p-8 rounded-2xl flex flex-col items-center text-center justify-between">
+                    <div class="flex flex-col items-center">
+                        <div class="text-cyan-400 text-4xl mb-4"><i class="fa-solid fa-dove"></i></div>
+                        <h4 class="font-bold text-2xl mb-2 text-white">Bird Keeping</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">Caring for domestic birds, managing cages, and observing nature paths.</p>
+                    </div>
+                    <span class="text-xs text-cyan-400 mt-6 font-mono">#AvianLove</span>
+                </div>
+                <!-- Swimming -->
+                <div class="interactive-card glass-card p-8 rounded-2xl flex flex-col items-center text-center justify-between">
+                    <div class="flex flex-col items-center">
+                        <div class="text-teal-400 text-4xl mb-4"><i class="fa-solid fa-swimmer"></i></div>
+                        <h4 class="font-bold text-2xl mb-2 text-white">Swimming</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">Staying highly fit, diving into pools, and refreshing stamina grids.</p>
+                    </div>
+                    <span class="text-xs text-teal-400 mt-6 font-mono">#Fitness</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 📚 BOOKS LOG SECTION -->
+        <section id="books" class="w-full py-24">
+            <h3 class="text-4xl font-extrabold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400" data-aos="fade-up">My Library & Reads</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
+                <!-- Book 1 -->
+                <div class="interactive-card glass-card p-6 rounded-2xl shadow-xl flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-center">
+                        <div class="w-28 h-40 bg-gradient-to-br from-blue-900 to-indigo-950 rounded shadow-md mx-auto mb-4 border border-blue-500/30 flex items-center justify-center text-3xl text-blue-400">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-white mb-1">Atomic Habits</h4>
+                        <p class="text-xs text-cyan-400 mb-3">by James Clear</p>
+                        <p class="text-sm text-gray-400">An incredible review on building micro routines and reshaping daily progression models.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-800 flex justify-between text-xs text-gray-500 font-mono">
+                        <span>Genre: Self-Help</span>
+                        <span class="text-green-400 font-bold">Completed</span>
+                    </div>
+                </div>
+
+                <!-- Book 2 -->
+                <div class="interactive-card glass-card p-6 rounded-2xl shadow-xl flex flex-col justify-between" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-center">
+                        <div class="w-28 h-40 bg-gradient-to-br from-cyan-900 to-teal-950 rounded shadow-md mx-auto mb-4 border border-cyan-500/30 flex items-center justify-center text-3xl text-cyan-400">
+                            <i class="fa-solid fa-compass-drafting"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-white mb-1">The Geometry of Things</h4>
+                        <p class="text-xs text-cyan-400 mb-3">Mathematical Insights</p>
+                        <p class="text-sm text-gray-400">Diving into structured spaces, patterns, circles, and spatial relationships around us.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-800 flex justify-between text-xs text-gray-500 font-mono">
+                        <span>Genre: Science</span>
+                        <span class="text-yellow-400 font-bold">Reading</span>
+                    </div>
+                </div>
+
+                <!-- Book 3 -->
+                <div class="interactive-card glass-card p-6 rounded-2xl shadow-xl flex flex-col justify-between" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-center">
+                        <div class="w-28 h-40 bg-gradient-to-br from-purple-900 to-pink-950 rounded shadow-md mx-auto mb-4 border border-purple-500/30 flex items-center justify-center text-3xl text-purple-400">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-white mb-1">Sherlock Holmes</h4>
+                        <p class="text-xs text-cyan-400 mb-3">by Arthur Conan Doyle</p>
+                        <p class="text-sm text-gray-400">Classic deduction and tactical mystery tracking that sharpens analytical focus.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-800 flex justify-between text-xs text-gray-500 font-mono">
+                        <span>Genre: Mystery</span>
+                        <span class="text-green-400 font-bold">Completed</span>
+                    </div>
+                </div>
+
+                <!-- Book 4 -->
+                <div class="interactive-card glass-card p-6 rounded-2xl shadow-xl flex flex-col justify-between" data-aos="fade-up" data-aos-delay="400">
+                    <div class="text-center">
+                        <div class="w-28 h-40 bg-gradient-to-br from-gray-800 to-gray-950 rounded shadow-md mx-auto mb-4 border border-gray-700/50 flex items-center justify-center text-3xl text-gray-400">
+                            <i class="fa-solid fa-plus-minus"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-white mb-1">Your Next Book</h4>
+                        <p class="text-xs text-cyan-400 mb-3">Author Name</p>
+                        <p class="text-sm text-gray-400">Placeholder card to easily append any upcoming book title or documentation read.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-800 flex justify-between text-xs text-gray-500 font-mono">
+                        <span>Genre: Custom</span>
+                        <span class="text-gray-600 font-bold">Queue</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Travel Section -->
+        <section id="travels" class="w-full py-24">
+            <h3 class="text-4xl font-extrabold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400" data-aos="fade-up">My Travel Diaries</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+                <!-- Travel 1 -->
+                <div class="interactive-card glass-card rounded-2xl shadow-2xl overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-52 w-full overflow-hidden relative">
+                        <img src="travel1.jpg" alt="Cox's Bazar" class="w-full h-full object-cover transition duration-500 hover:scale-110" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600&auto=format&fit=crop'">
+                        <span class="absolute top-4 left-4 bg-cyan-600/90 text-white text-xs font-mono px-3 py-1 rounded-full backdrop-blur-sm"><i class="fa-solid fa-location-dot mr-1"></i>Cox's Bazar</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white mb-2">The Longest Sea Beach</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">Experiencing the infinite ocean waves, mesmerizing sunsets, and walking along the marine drive with good vibes.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-800 text-xs text-cyan-400 font-mono">#Wanderlust #SeaVibes</div>
+                    </div>
+                </div>
+                <!-- Travel 2 -->
+                <div class="interactive-card glass-card rounded-2xl shadow-2xl overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-52 w-full overflow-hidden relative">
+                        <img src="travel2.jpg" alt="Sajek Valley" class="w-full h-full object-cover transition duration-500 hover:scale-110" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600&auto=format&fit=crop'">
+                        <span class="absolute top-4 left-4 bg-blue-600/90 text-white text-xs font-mono px-3 py-1 rounded-full backdrop-blur-sm"><i class="fa-solid fa-location-dot mr-1"></i>Sajek Valley</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white mb-2">Queen of Hills</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">Chasing the clouds above the mountain peaks, observing tribal culture, and witnessing stargazing nights.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-800 text-xs text-blue-400 font-mono">#MountainHigh #CloudChaser</div>
+                    </div>
+                </div>
+                <!-- Travel 3 -->
+                <div class="interactive-card glass-card rounded-2xl shadow-2xl overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="300">
+                    <div class="h-52 w-full overflow-hidden relative">
+                        <img src="travel3.jpg" alt="Sylhet" class="w-full h-full object-cover transition duration-500 hover:scale-110" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=600&auto=format&fit=crop'">
+                        <span class="absolute top-4 left-4 bg-teal-600/90 text-white text-xs font-mono px-3 py-1 rounded-full backdrop-blur-sm"><i class="fa-solid fa-location-dot mr-1"></i>Sylhet</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white mb-2">Land of Tea Gardens</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">Exploring emerald green swamp forests, hidden crystal clear rivers, and vast rolling hills of lush tea gardens.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-800 text-xs text-teal-400 font-mono">#NatureLover #GreenEscape</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- School Section -->
+        <section id="education" class="w-full py-24">
+            <h3 class="text-4xl font-extrabold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400" data-aos="fade-up">School Days & Memories</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
+                <!-- School 1 -->
+                <div class="interactive-card glass-card rounded-2xl shadow-2xl overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-52 w-full overflow-hidden relative">
+                        <img src="school1.jpg" alt="Primary School" class="w-full h-full object-cover transition duration-500 hover:scale-110" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'">
+                        <span class="absolute top-4 left-4 bg-blue-600/90 text-white text-xs font-mono px-3 py-1 rounded-full backdrop-blur-sm">Primary Days</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white mb-2">Primary School</h4>
+                            <p class="text-cyan-400 text-sm font-medium mb-4"><i class="fa-solid fa-graduation-cap mr-2"></i>Primary Education</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">The origin of childhood! Running around the field during tiffin breaks, playing traditional games, and catching raindrops with friends.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-800 text-xs text-gray-500 flex items-center gap-2">
+                            <i class="fa-solid fa-heart text-red-500"></i> Childhood Memories
+                        </div>
+                    </div>
+                </div>
+                <!-- School 2 -->
+                <div class="interactive-card glass-card rounded-2xl shadow-2xl overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-52 w-full overflow-hidden relative">
+                        <img src="school2.jpg" alt="High School" class="w-full h-full object-cover transition duration-500 hover:scale-110" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=600&auto=format&fit=crop'">
+                        <span class="absolute top-4 left-4 bg-cyan-600/90 text-white text-xs font-mono px-3 py-1 rounded-full backdrop-blur-sm">High School</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white mb-2">High School</h4>
+                            <p class="text-cyan-400 text-sm font-medium mb-4"><i class="fa-solid fa-graduation-cap mr-2"></i>Secondary Education</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">High school life was unmatched. Constant laughs on the backbenches, skipping class for common room games, and unforgettable memories.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-800 text-xs text-gray-500 flex items-center gap-2">
+                            <i class="fa-solid fa-star text-yellow-500"></i> Golden Era
+                        </div>
+                    </div>
+                </div>
+                <!-- School 3 -->
+                <div class="interactive-card glass-card rounded-2xl shadow-2xl overflow-hidden flex flex-col" data-aos="fade-up" data-aos-delay="300">
+                    <div class="h-52 w-full overflow-hidden relative">
+                        <img src="school3.jpg" alt="College" class="w-full h-full object-cover transition duration-500 hover:scale-110" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=600&auto=format&fit=crop'">
+                        <span class="absolute top-4 left-4 bg-teal-600/90 text-white text-xs font-mono px-3 py-1 rounded-full backdrop-blur-sm">College Days</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white mb-2">Higher Secondary College</h4>
+                            <p class="text-cyan-400 text-sm font-medium mb-4"><i class="fa-solid fa-graduation-cap mr-2"></i>Higher Secondary</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">New environment, bigger targets, and the first step toward building a career. Lab experiments, group studies, and exam night hustles.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-800 text-xs text-gray-500 flex items-center gap-2">
+                            <i class="fa-solid fa-rocket text-blue-400"></i> Future Foundation
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Section -->
+        <section id="contact" class="w-full py-24">
+            <h3 class="text-4xl font-extrabold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400" data-aos="fade-up">Connect With Me</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+                <a href="https://facebook.com/your-username" target="_blank" class="interactive-card glass-card p-8 rounded-2xl shadow-xl text-center flex flex-col items-center group">
+                    <div class="text-[#1877F2] text-5xl mb-5 group-hover:scale-110 transition duration-300"><i class="fa-brands fa-facebook"></i></div>
+                    <h4 class="font-bold text-2xl mb-2 text-white">Facebook</h4>
+                    <p class="text-sm text-gray-400">Let's stay updated and chat</p>
+                    <span class="text-xs text-blue-400 mt-4 font-mono">Follow / Message →</span>
+                </a>
+                <a href="https://instagram.com/your-username" target="_blank" class="interactive-card glass-card p-8 rounded-2xl shadow-xl text-center flex flex-col items-center group">
+                    <div class="instagram-gradient text-5xl mb-5 group-hover:scale-110 transition duration-300"><i class="fa-brands fa-instagram"></i></div>
+                    <h4 class="font-bold text-2xl mb-2 text-white">Instagram</h4>
+                    <p class="text-sm text-gray-400">Take a look at my captures</p>
+                    <span class="text-xs text-pink-400 mt-4 font-mono">View Profile →</span>
+                </a>
+                <a href="mailto:rahat.bd@email.com" class="interactive-card glass-card p-8 rounded-2xl shadow-xl text-center flex flex-col items-center group">
+                    <div class="text-[#ea4335] text-5xl mb-5 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-envelope"></i></div>
+                    <h4 class="font-bold text-2xl mb-2 text-white">Email</h4>
+                    <p class="text-sm text-gray-400 font-mono break-all">rahat.bd@email.com</p>
+                    <span class="text-xs text-red-400 mt-4 font-mono">Send Message →</span>
+                </a>
+                <a href="tel:+880123456789" class="interactive-card glass-card p-8 rounded-2xl shadow-xl text-center flex flex-col items-center group">
+                    <div class="text-[#25D366] text-5xl mb-5 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-phone"></i></div>
+                    <h4 class="font-bold text-2xl mb-2 text-white">Phone</h4>
+                    <p class="text-sm text-gray-400 font-mono">+880 1XXX-XXXXXX</p>
+                    <span class="text-xs text-green-400 mt-4 font-mono">Call Direct →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="w-full p-8 text-center text-gray-600 text-sm border-t border-gray-900/50">
+            © 2026 Abdur Rahat. All rights reserved.
+        </footer>
+
+    </div>
+
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        // Typing Transition Engine
+        const words = ["Student.", "Photographer.", "Nature Lover.", "Avid Reader."];
+        let wordIdx = 0, charIdx = 0, isDeleting = false;
+        const targetElement = document.querySelector(".typing-text");
+
+        function typeEffect() {
+            const currentWord = words[wordIdx];
+            if (isDeleting) {
+                charIdx--;
+            } else {
+                charIdx++;
+            }
+            targetElement.textContent = currentWord.substring(0, charIdx);
+
+            let speed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIdx === currentWord.length) {
+                speed = 1800; 
+                isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false;
+                wordIdx = (wordIdx + 1) % words.length;
+                speed = 400; 
+            }
+            setTimeout(typeEffect, speed);
+        }
+        document.addEventListener("DOMContentLoaded", () => setTimeout(typeEffect, 500));
+
+
+        // 🚀 HIGHLY RESPONSIVE INTERACTIVE MOUSE PARTICLES ENGINE
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const mouse = { x: null, y: null, radius: 150 };
+
+        // Real-time globally active window level event tracking for mouse coordinate capturing
+        window.addEventListener('mousemove', (e) => { 
+            mouse.x = e.clientX; 
+            mouse.y = e.clientY; 
+        });
+        
+        window.addEventListener('touchmove', (e) => { 
+            if (e.touches.length > 0) { 
+                mouse.x = e.touches[0].clientX; 
+                mouse.y = e.touches[0].clientY; 
+            } 
+        });
+        
+        window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+        window.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        }
+        window.addEventListener('resize', resize);
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * window.innerWidth;
+                this.y = Math.random() * window.innerHeight;
+                // Base Floating Speeds (Constant background movement)
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.radius = Math.random() * 3 + 2; 
+            }
+            update() {
+                // Interactive Magnet / Repulsion Calculation Logic
+                if (mouse.x !== null && mouse.y !== null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.hypot(dx, dy);
+                    
+                    if (distance < mouse.radius) {
+                        let forceDirectionX = dx / distance;
+                        let forceDirectionY = dy / distance;
+                        let maxDistance = mouse.radius;
+                        // Calculates push intensity based on how close the mouse pointer is
+                        let force = (maxDistance - distance) / maxDistance;
+                        
+                        // Push particles away swiftly
+                        this.x -= forceDirectionX * force * 5;
+                        this.y -= forceDirectionY * force * 5;
+                    }
+                }
+                
+                // Keep moving independently
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Screen boundary constraints check
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#06b6d4'; 
+                ctx.fillStyle = 'rgba(34, 211, 238, 0.85)'; 
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function init() {
+            particles = [];
+            // Auto balances particle count array depending on screens sizes
+            const count = Math.min(90, Math.floor((canvas.width * canvas.height) / 20000));
+            for(let i = 0; i < count; i++) { 
+                particles.push(new Particle()); 
+            }
+        }
+        resize();
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Step loop update
+            particles.forEach(p => { 
+                p.update(); 
+                p.draw(); 
+            });
+            
+            // Draw interactive constellations node connection meshes
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+                    if (dist < 130) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(34, 211, 238, ${0.22 * (1 - dist/130)})`;
+                        ctx.lineWidth = 1.0;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
